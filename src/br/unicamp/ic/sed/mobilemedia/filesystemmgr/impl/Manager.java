@@ -43,12 +43,6 @@ class Manager implements IManager{
 	}
 
 	public Object getProvidedInterface(String name){
-
-		/* if (name.equals("IFilesystem")){
-	   		return new IFilesystemFacade();
-	   }
-
-	   return null;*/
 		return this.providedInterfaces.get(name);
 	}
 
@@ -60,19 +54,19 @@ class Manager implements IManager{
 		return requiredInterfaces.get(name);
 	}
 
-	private String[] convertListToArray(Enumeration stringEnum){
-		Vector stringVector = new Vector();
-		for (Enumeration iter = stringEnum; iter.hasMoreElements();) {
-			String element = (String) iter.nextElement();
-			stringVector.addElement(element);
-		}
-
-		String[] stringArray = new String[stringVector.size()];
-		for (int i=0; i < stringVector.size(); i++){
-			stringArray[i] = (String) stringVector.elementAt(i);
-		}
-		return stringArray;
-	}
+//	private String[] convertListToArray(Enumeration stringEnum){
+//		Vector stringVector = new Vector();
+//		for (Enumeration iter = stringEnum; iter.hasMoreElements();) {
+//			String element = (String) iter.nextElement();
+//			stringVector.addElement(element);
+//		}
+//
+//		String[] stringArray = new String[stringVector.size()];
+//		for (int i=0; i < stringVector.size(); i++){
+//			stringArray[i] = (String) stringVector.elementAt(i);
+//		}
+//		return stringArray;
+//	}
 }
 
 

@@ -1,7 +1,9 @@
-///*
-// * Created on 31-Mar-2005
-// *
-// */
+/*
+ * Created on 31-Mar-2005
+ *
+ */
+
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.spec.dt;
 
 /**
@@ -18,27 +20,18 @@ public class Constants {
 	
 	public static final String NEWALBUM_SCREEN = "NewAlbumScreen";
 	public static final String CONFIRMDELETEALBUM_SCREEN = "ConfirmDeleteAlbumScreen";
-	public static final String ADDPHOTOTOALBUM_SCREEN = "AddPhotoToAlbum";
+	public static final String ADDPHOTOTOALBUM_SCREEN = "AddMediaToAlbum";
 	public static final String NEWLABEL_SCREEN = "newLabelScreen";
     
-	//#ifdef device_screen_176x205
-    
+	//#ifdef Album
+	public static final String IMAGE_MEDIA = "ImageMedia";
+	//#endif
+
+	
+	
     /** Screen Size*/
 	public static final int SCREEN_WIDTH  = 176;
 	public static final int SCREEN_HEIGHT = 205;
 	
-	//#elifdef device_screen_128x149
-	//#
-	//# /** Screen Size*/
-	//# public static final int SCREEN_WIDTH  = 128;
-	//# public static final int SCREEN_HEIGHT = 149;
-	//#
-	//#elifdef device_screen_132x176
-	//#
-	//# /** Screen Size*/
-	//# public static final int SCREEN_WIDTH  = 132;
-	//# public static final int SCREEN_HEIGHT = 176;
-	//#
-	//#endif
-
 }
+//#endif

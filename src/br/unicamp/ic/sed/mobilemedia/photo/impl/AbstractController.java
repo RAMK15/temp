@@ -7,6 +7,8 @@
  */
 
 /*begin - added in MobileMedia-Cosmos-OO-v4*/
+
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.impl;
 
 import javax.microedition.lcdui.Alert;
@@ -16,16 +18,11 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.midlet.MIDlet;
 
-
-import br.unicamp.ic.sed.mobilemedia.main.spec.prov.ControllerInterface;
+import br.unicamp.ic.sed.mobilemedia.main.ControllerInterface;
 import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.ImageNotFoundException;
 import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.InvalidImageDataException;
 import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.NullAlbumDataReference;
 import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.PersistenceMechanismException;
-import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.UnavailablePhotoAlbumException;
-
-import br.unicamp.ic.sed.mobilemedia.photo.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.photo.spec.req.IMobilePhone;
 
 //import br.unicamp.ic.sed.mobilemedia.album.impl.AlbumListScreen;
 
@@ -69,12 +66,6 @@ public abstract class AbstractController implements CommandListener, ControllerI
 				if (next != null) {
 					System.out.println("Passing to next controller in chain: " + next.getClass().getName());
 					return next.postCommand(command);
-				} else {
-					System.out.println("AbstractController::postCommand - Reached top of chain. No more handlers for command: " + command.getLabel());
-					IManager manager = ComponentFactory.createInstance();
-					IMobilePhone mobilePhone = (IMobilePhone) manager.getRequiredInterface("IMobilePhone");
-					return mobilePhone.postCommand(command);
-
 				}
 			}
 		} catch (ImageNotFoundException e) {
@@ -82,10 +73,7 @@ public abstract class AbstractController implements CommandListener, ControllerI
 			handler.handle(e);
 		} catch (NullAlbumDataReference e) {
 			Handler handler = new Handler();
-			handler.handle(e);
-		} catch (UnavailablePhotoAlbumException e) {
-			Handler handler = new Handler();
-			handler.handle(e);
+			handler.handle(e);	
 		} catch (InvalidImageDataException e) {
 			Handler handler = new Handler();
 			handler.handle(e);
@@ -99,7 +87,7 @@ public abstract class AbstractController implements CommandListener, ControllerI
 
 	
 
-	protected abstract boolean handleCommand(Command command)throws ImageNotFoundException, NullAlbumDataReference, PersistenceMechanismException, InvalidImageDataException, UnavailablePhotoAlbumException;
+	protected abstract boolean handleCommand(Command command)throws ImageNotFoundException, NullAlbumDataReference, PersistenceMechanismException, InvalidImageDataException;
 
 	/* 
 	 * Handle events. For now, this just passes control off to a 'wrapper'
@@ -196,3 +184,4 @@ public abstract class AbstractController implements CommandListener, ControllerI
 	}
 }
 /*end - added in MobileMedia-Cosmos-OO-v4*/
+//#endif

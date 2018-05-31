@@ -4,7 +4,7 @@ package br.unicamp.ic.sed.mobilemedia.sms.spec.prov;
 
 import javax.microedition.lcdui.Command;
 
-import br.unicamp.ic.sed.mobilemedia.main.spec.prov.ControllerInterface;
+import br.unicamp.ic.sed.mobilemedia.main.ControllerInterface;
 
 
 public interface ISms extends ControllerInterface{

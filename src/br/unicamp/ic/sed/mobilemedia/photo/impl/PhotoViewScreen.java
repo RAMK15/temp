@@ -1,29 +1,21 @@
-/*
- */
+//#ifdef Album
 
 package br.unicamp.ic.sed.mobilemedia.photo.impl;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 
 import br.unicamp.ic.sed.mobilemedia.photo.spec.dt.Constants;
-
-/*import lancs.mobilemedia.core.ui.datamodel.AlbumData;
-import lancs.mobilemedia.core.util.Constants;
-import lancs.mobilemedia.lib.exceptions.ImageNotFoundException;
-import lancs.mobilemedia.lib.exceptions.PersistenceMechanismException;
- */
+import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.ImageNotFoundException;
+import br.unicamp.ic.sed.mobilemedia.photo.spec.excep.PersistenceMechanismException;
 /**
  * This screen displays a selected image.
  */
 public class PhotoViewScreen extends Canvas {
 
-//	String imageName = "";
+	String imageName = "";
 	Image image;
-	//AlbumData model = null;
 
 	public static final Command backCommand = new Command("Back", Command.BACK, 0);
 
@@ -131,3 +123,4 @@ public class PhotoViewScreen extends Canvas {
 	
 	// #endif
 }
+//#endif

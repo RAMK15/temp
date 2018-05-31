@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.impl;
 
 import br.unicamp.ic.sed.mobilemedia.photo.spec.prov.IManager;
@@ -14,6 +15,4 @@ public class ComponentFactory {
 		return manager;
 	}
 }
-
-
-
+//#endif

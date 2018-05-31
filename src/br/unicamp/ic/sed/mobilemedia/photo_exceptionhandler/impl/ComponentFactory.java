@@ -1,6 +1,5 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo_exceptionhandler.impl;
-
-
 
 public class ComponentFactory {
 
@@ -14,6 +13,4 @@ public class ComponentFactory {
 		return manager;
 	}
 }
-
-
-
+//#endif

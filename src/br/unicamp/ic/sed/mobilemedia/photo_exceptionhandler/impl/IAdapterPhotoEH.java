@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo_exceptionhandler.impl;
 
 import br.unicamp.ic.sed.mobilemedia.photo.spec.req.IExceptionHandler;
@@ -12,3 +13,4 @@ public class IAdapterPhotoEH implements IExceptionHandler {
 	}
 
 }
+//#endif

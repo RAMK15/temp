@@ -18,10 +18,22 @@ public class Constants {
 	
 	public static final String NEWALBUM_SCREEN = "NewAlbumScreen";
 	public static final String CONFIRMDELETEALBUM_SCREEN = "ConfirmDeleteAlbumScreen";
-	public static final String ADDPHOTOTOALBUM_SCREEN = "AddPhotoToAlbum";
+	public static final String ADDPHOTOTOALBUM_SCREEN = "AddMediaToAlbum";
 	
 	public static final String NEWLABEL_SCREEN = "NewLabelScreen";
 
+	//#ifdef Album
+	public static final String IMAGE_MEDIA = "ImageMedia";
+	//#endif
+	
+	//#ifdef includeMusic
+	public static final String MUSIC_MEDIA = "MusicMedia";
+	//#endif
+	
+	//#if Album && includeMusic
+	public static final String SELECT_TYPE_OF_MEDIA = "SelectTypeOfMedia";
+	//#endif
+	
 	//#ifdef device_screen_176x205
     
     /** Screen Size*/

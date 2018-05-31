@@ -8,5 +8,7 @@ class IAdapterAlbumEH implements IExceptionHandler {
 		IManager manager = ComponentFactory.createInstance();
 		br.unicamp.ic.sed.mobilemedia.exceptionhandler.spec.prov.IExceptionHandler handler = (br.unicamp.ic.sed.mobilemedia.exceptionhandler.spec.prov.IExceptionHandler)manager.getRequiredInterface("IExceptionHandler");
 		handler.handle(exception);
+
 	}
+
 }

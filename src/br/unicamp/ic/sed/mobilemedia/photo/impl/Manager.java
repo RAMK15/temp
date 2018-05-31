@@ -6,6 +6,7 @@
  * date: February 2009
  * 
  */
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.impl;
 
 import java.util.Enumeration;
@@ -70,6 +71,4 @@ class Manager implements IManager{
 	
 	
 }
-
-
-
+//#endif

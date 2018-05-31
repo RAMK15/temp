@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.spec.prov;
 
 public interface IManager{
@@ -14,3 +15,4 @@ public interface IManager{
 	
 	
 }
+//#endif

@@ -8,61 +8,105 @@
  */ 
 package br.unicamp.ic.sed.mobilemedia.album.impl;
 
+import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 
+import br.unicamp.ic.sed.mobilemedia.album.spec.dt.Constants;
 import br.unicamp.ic.sed.mobilemedia.album.spec.prov.IAlbum;
 import br.unicamp.ic.sed.mobilemedia.album.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.album.spec.req.IFilesystem;
 import br.unicamp.ic.sed.mobilemedia.album.spec.req.IMobileResources;
 
 
 class IAlbumFacade implements IAlbum{
-
-	private AlbumListScreen albumListScreen;
-	private AlbumController albumController;
 	
-	private AlbumListScreen getAlbumListScreen() {
-		this.albumListScreen = new AlbumListScreen();
-		return albumListScreen;
-	}
+	//#ifdef Album
+	private AlbumListScreen albumPhoto;
+	private AlbumController albumController;
+	private BaseController imageRootController;
+	//#endif
+	
+	//#ifdef includeMusic
+	private AlbumListScreen albumMusic;
+	private AlbumController albumMusicController;
+	private BaseController musicRootController;
+	//#endif
+	
 
-	private AlbumController getAlbumController() {
-		if( this.albumController == null){
-			IManager manager = ComponentFactory.createInstance();
-			IMobileResources mobileResources = (IMobileResources) manager.getRequiredInterface("IMobileResources");
-			MIDlet midlet = mobileResources.getMainMIDlet();
-			AlbumListScreen albumListScreen = this.getAlbumListScreen();
-			this.albumController = new AlbumController( midlet ,  albumListScreen );
-		}
-		return albumController;
-	}
-
-
-
-	public void initAlbumListScreen (  ){
-		//initialize all the screens
-		
-		IManager manager = ComponentFactory.createInstance();
-		IFilesystem filesyste = (IFilesystem)manager.getRequiredInterface("IFilesystem");
-		
-		String[] albumNames = filesyste.getAlbumNames(); 
-		
-		AlbumListScreen albumListScr = this.getAlbumListScreen();
-		for (int i = 0; i < albumNames.length; i++) {
-			if (albumNames[i] != null) {
-				//Add album name to menu list
-				albumListScr.append(albumNames[i], null);
+	public void reinitAlbumListScreen(){
+		//#if Album && includeMusic
+		if( ScreenSingleton.getInstance().getCurrentMediaType() != null ){
+			if( ScreenSingleton.getInstance().getCurrentMediaType().equals(Constants.IMAGE_MEDIA) ){
+				ScreenSingleton.getInstance().setCurrentScreenName( Constants.ALBUMLIST_SCREEN );
+				albumController.setCurrentScreen( imageRootController.getAlbumListScreen() );
 			}
+			else{
+				ScreenSingleton.getInstance().setCurrentScreenName( Constants.ALBUMLIST_SCREEN );
+				albumController.setCurrentScreen( musicRootController.getAlbumListScreen() );
+			}
+		}else{
+			albumController.setCurrentScreen( ScreenSingleton.getInstance().getMainMenu() );
 		}
+		//#elif Album
+		ScreenSingleton.getInstance().setCurrentScreenName( Constants.ALBUMLIST_SCREEN );
+		albumController.setCurrentScreen( imageRootController.getAlbumListScreen() );	
+		//#elif includeMusic
+		ScreenSingleton.getInstance().setCurrentScreenName( Constants.ALBUMLIST_SCREEN );
+		albumMusicController.setCurrentScreen( musicRootController.getAlbumListScreen() );
+		//#endif
+		
+	}
+	
+	public void startUp() {
 
-		albumListScr.initMenu();
-
-		//Set the current screen to the photo album listing
-		AlbumController albumCtr = this.getAlbumController();
-
-		albumCtr.setCurrentScreen(albumListScr);
-
-		albumListScr.setCommandListener( albumCtr );
-
-	} 
+		IManager manager = ComponentFactory.createInstance();
+		IMobileResources mobileResources = (IMobileResources) manager.getRequiredInterface("IMobileResources");
+		MIDlet midlet = mobileResources.getMainMIDlet();
+		
+		// #ifdef Album
+		// [NC] Added in the scenario 07
+		
+		albumPhoto = new AlbumListScreen();
+		imageRootController = new BaseController( midlet , albumPhoto );
+		
+		//#if Album && includeMusic
+		imageRootController.setTypeOfMedia( Constants.IMAGE_MEDIA );
+		//#endif
+		
+		albumController = new AlbumController( midlet , albumPhoto );
+		albumController.setNextController( imageRootController );
+		albumPhoto.setCommandListener(albumController);
+		//#endif
+		
+		// #ifdef includeMusic
+		// [NC] Added in the scenario 07
+		albumMusic = new AlbumListScreen();
+		musicRootController = new BaseController( midlet , albumMusic );
+		
+		//#if Album && includeMusic
+		musicRootController.setTypeOfMedia( Constants.MUSIC_MEDIA );
+		//#endif
+		
+		albumMusicController = new AlbumController(midlet , albumMusic);
+		albumMusicController.setNextController(musicRootController );
+		albumMusic.setCommandListener(albumMusicController);
+		//#endif
+		
+		// #if includeMusic && Album
+		// [NC] Added in the scenario 07
+		SelectMediaController selectcontroller = new SelectMediaController( midlet , albumPhoto , imageRootController,musicRootController);
+		selectcontroller.setNextController(imageRootController);
+		
+		SelectTypeOfMedia mainscreen = new SelectTypeOfMedia();
+		mainscreen.initMenu();
+		mainscreen.setCommandListener(selectcontroller);
+		
+		Display.getDisplay( midlet ).setCurrent(mainscreen);
+		ScreenSingleton.getInstance().setMainMenu(mainscreen);
+		//#elif Album
+		imageRootController.init( );
+		//#elif includeMusic
+		musicRootController.init( );
+		//#endif
+		
+	}
 }

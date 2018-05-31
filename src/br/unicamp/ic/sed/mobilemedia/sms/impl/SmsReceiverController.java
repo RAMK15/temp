@@ -6,7 +6,7 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.midlet.MIDlet;
 
 import br.unicamp.ic.sed.mobilemedia.sms.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IAlbum;
+import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IMedia;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IPhoto;
 
 
@@ -14,6 +14,8 @@ import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IPhoto;
 
 class SmsReceiverController extends AbstractController {
 	byte[] incomingImageData;
+	
+	private IManager manager = ComponentFactory.createInstance();
 
 	public SmsReceiverController(MIDlet midlet) {
 		super( midlet );
@@ -34,13 +36,11 @@ class SmsReceiverController extends AbstractController {
 		/** Case: ... **/
 		if (label.equals("Accept Photo")) {
 
-			Image image = Image.createImage(incomingImageData, 0, incomingImageData.length);
-			Image copy = Image.createImage(image.getWidth(), image.getHeight());
-			
+			Image image = Image.createImage(incomingImageData, 0, incomingImageData.length);	
 			IPhoto photo = (IPhoto) manager.getRequiredInterface("IPhoto");
 			photo.initPhotoViewScreen( image , incomingImageData );
 			return true;
-
+ 
 		} else if (label.equals("Reject Photo")) {
 
 			//TODO: Go back to whatever screen they were previously on?
@@ -64,9 +64,14 @@ class SmsReceiverController extends AbstractController {
 	}
 	
 	private void initAlbumListScreen(){
-		IManager manager = ComponentFactory.createInstance();
-		IAlbum album = (IAlbum) manager.getRequiredInterface("IAlbum");
-		album.initAlbumListScreen();
+//		IManager manager = ComponentFactory.createInstance();
+//		IFilesystem filesystem = (IFilesystem) manager.getRequiredInterface("IFilesystem");
+//		String[] albumNames = filesystem.getAlbumNames();
+//		IAlbum album = (IAlbum) manager.getRequiredInterface("IAlbum");
+//		album.initAlbumListScreen(albumNames);
+		
+		IMedia media = (IMedia) manager.getRequiredInterface("IMedia");
+		media.showLastMediaList();
 	}
 }
 

@@ -4,12 +4,13 @@ import br.unicamp.ic.sed.mobilemedia.album.spec.excep.InvalidPhotoAlbumNameExcep
 import br.unicamp.ic.sed.mobilemedia.album.spec.excep.PersistenceMechanismException;
 
 public interface IFilesystem{
-	
-	public void createNewPhotoAlbum ( String albumName ) throws PersistenceMechanismException, InvalidPhotoAlbumNameException; 
 
-	public void deletePhotoAlbum ( String albumName ) throws PersistenceMechanismException; 
+	public void createNewMediaAlbum ( String mediaType, String albumName ) throws PersistenceMechanismException, InvalidPhotoAlbumNameException; 
+		
+	public void deleteMediaAlbum ( String mediaType, String albumName ) throws PersistenceMechanismException; 
 	
-	public String[] getAlbumNames (  ); 
+	public String[] getAlbumNames (String mediaType  );  
+ 		
+	public void resetMediaData ( String mediaType  ) throws PersistenceMechanismException;
 	
-	public void resetImageData (  ) throws PersistenceMechanismException;
 }

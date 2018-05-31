@@ -1,7 +1,4 @@
-
 package br.unicamp.ic.sed.mobilemedia.album.impl;
-
-
 
 class ScreenSingleton {
 	
@@ -53,4 +50,27 @@ class ScreenSingleton {
 	public String getCurrentStoreName() {
 		return currentStoreName;
 	}
+
+	// #if includeMusic && Album
+	// [NC] Added in the scenario 07
+	private SelectTypeOfMedia mainscreen;
+	
+	public SelectTypeOfMedia getMainMenu(){
+		return mainscreen;
+	}
+	
+	public void setMainMenu(SelectTypeOfMedia screen){
+		mainscreen = screen;
+	}
+	
+	public void setCurrentMediaType(String currentMediaType) {
+		this.currentMediaType = currentMediaType;
+	}
+
+	public String getCurrentMediaType() {
+		return currentMediaType;
+	}
+
+	private String currentMediaType;
+	//#endif
 }

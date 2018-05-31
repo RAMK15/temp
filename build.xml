@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
-<project name="MobileMedia-Cosmos-v5" default="full-build-and-run-default" basedir=".">
+<project name="MobileMedia-Cosmos-v6" default="full-build-and-run-default" basedir=".">
 
 	<!-- Define all relevant properties here. -->
     <property name="workspace.dir" location="${basedir}"/> 
@@ -39,7 +39,7 @@
 	
 	<!-- Set the classpath to be used -->
 	<!-- <property name="build.classpath" value="${midpapi20.jar};${cldcapi11.jar};${wma.jar};${mmapi.jar};${jsr75.jar};${moto730.zip};${siemensLib.zip};${blackberryLib.jar};${antenna.jar}"/>-->
-	<property name="build.classpath" value="${wma11.jar};${midpapi20.jar};${cldcapi11.jar};${antenna.jar}"/>
+	<property name="build.classpath" value="${wma11.jar};${midpapi20.jar};${cldcapi11.jar};${antenna.jar};${mmapi.jar}"/>
 	<!-- property name="build.classpath" value="${midpapi20.jar};${cldcapi11.jar};${antenna.jar};${jre6.jar}"/ -->
 	
 	<!-- Directories created or used during the build process -->

@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.filesystemmgr_photo.impl;
 
 import java.util.*;
@@ -50,6 +51,4 @@ class Manager implements IManager{
 		return stringArray;
 	}
 }
-
-
-
+//#endif

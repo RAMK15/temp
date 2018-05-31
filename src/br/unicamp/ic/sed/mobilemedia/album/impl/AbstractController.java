@@ -18,16 +18,12 @@ import javax.microedition.midlet.MIDlet;
 
 import br.unicamp.ic.sed.mobilemedia.album.spec.excep.InvalidPhotoAlbumNameException;
 import br.unicamp.ic.sed.mobilemedia.album.spec.excep.PersistenceMechanismException;
-import br.unicamp.ic.sed.mobilemedia.album.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.album.spec.req.IPhoto;
 
 abstract class AbstractController implements CommandListener, ControllerInterface {
-
-	//Define the basic screens
-	private AlbumListScreen albumListScreen;
 	
 	private MIDlet midlet;
-
+	protected AlbumListScreen albumListScreen;
+	
 	//Define a successor to implement the Chain of Responsibility design pattern
 	private ControllerInterface nextController;
 
@@ -38,9 +34,9 @@ abstract class AbstractController implements CommandListener, ControllerInterfac
 	 * @param albumListScreen
 	 * @param currentScreenName
 	 */
-	public AbstractController(MIDlet midlet, AlbumListScreen screen) {
+	public AbstractController(MIDlet midlet , AlbumListScreen albumListScreen ) {
 		this.midlet = midlet;
-		this.albumListScreen = screen;
+		this.albumListScreen = albumListScreen;
 		// [EF] Senario 04: A singleton ScreenSingleton was created in order to all other access it. 
 		// [EF] I think some data need to be unique (e.g. currentScreenName) to make them consistent for all controllers.
 	}
@@ -59,18 +55,13 @@ abstract class AbstractController implements CommandListener, ControllerInterfac
 
 	/**
 	 * [EF] Scenario 04: Just forward method.
-	 * @return the currentStoreName
+	 * @return .the currentStoreName
 	 *//*
 	public String getCurrentStoreName() {
 		return ScreenSingleton.getInstance().getCurrentStoreName();
 	}
 */
-	/**
-	 * @return the albumListScreen
-	 */
-	protected AlbumListScreen getAlbumListScreen() {
-		return this.albumListScreen;
-	}
+	
 
 
     /**
@@ -109,14 +100,8 @@ abstract class AbstractController implements CommandListener, ControllerInterfac
 			    if (next != null) {
 			        System.out.println("Passing to next controller in chain: " + next.getClass().getName());
 			        return next.postCommand(command);
-			    } else {
-			        System.out.println("AbstractController::postCommand - Reached top of chain. No more handlers for command: " + command.getLabel());
-			        IManager manager = ComponentFactory.createInstance();
-			        IPhoto photo = (IPhoto) manager.getRequiredInterface("IPhoto");
-			        return photo.postCommand(command);
 			    }
 			}
-			
 		} catch (PersistenceMechanismException e) {
 			Handler handler = new Handler();
 			handler.handle( new PersistenceMechanismException( "Impossible to load album: " ));
@@ -130,9 +115,7 @@ abstract class AbstractController implements CommandListener, ControllerInterfac
 
 	
 	
-	protected void setAlbumListAsCurrentScreen(Alert a) {
-    	setCurrentScreen(a, albumListScreen);
-    }
+	
 
 	/**
 	 * Set the current screen for display, after alert
@@ -161,5 +144,28 @@ abstract class AbstractController implements CommandListener, ControllerInterfac
 		System.out.println("[AbstractController.setNextController] nextController="+nextController.getClass().getName());
 		this.nextController = nextController;
 	}
+	
+	protected String typeOfmedia = null;
+	//#if Album & includeMusic
+	
+	public void setTypeOfMedia( String tMedia ){
+		this.typeOfmedia = tMedia;
+	}
+	
+	public String getTypeOfMedia( ){
+		return this.typeOfmedia;
+	}
+	//#endif
+	
+	/**
+	 * @return the albumListScreen
+	 */
+	protected AlbumListScreen getAlbumListScreen() {
+		return this.albumListScreen;
+	}
+	
+	protected void setAlbumListAsCurrentScreen(Alert a) {
+    	setCurrentScreen(a, albumListScreen);
+    }
 }
 /*end - added in MobileMedia-Cosmos-OO-v4*/

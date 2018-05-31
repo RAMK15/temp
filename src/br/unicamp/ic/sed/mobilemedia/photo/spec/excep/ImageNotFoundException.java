@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.spec.excep;
 
 public class ImageNotFoundException extends Exception {
@@ -19,3 +20,4 @@ public class ImageNotFoundException extends Exception {
 		return cause;
 	}
 }
+//#endif

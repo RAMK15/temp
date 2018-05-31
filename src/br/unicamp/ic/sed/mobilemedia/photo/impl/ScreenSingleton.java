@@ -1,4 +1,4 @@
-
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.impl;
 
 
@@ -54,3 +54,4 @@ class ScreenSingleton {
 		return currentStoreName;
 	}
 }
+//#endif

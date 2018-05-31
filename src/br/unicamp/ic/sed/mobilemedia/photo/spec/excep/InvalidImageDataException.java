@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo.spec.excep;
 
 public class InvalidImageDataException extends Exception {
@@ -20,3 +21,4 @@ public class InvalidImageDataException extends Exception {
 		return cause;
 	}
 }
+//#endif

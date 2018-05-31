@@ -9,5 +9,4 @@ public interface IMobileResources {
 	 * @return
 	 */
 	public MIDlet getMainMIDlet();
-		
 }

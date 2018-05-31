@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.filesystemmgr_photo.impl;
 
 public interface IManager{
@@ -12,3 +13,4 @@ public interface IManager{
 	
 	public Object getRequiredInterface(String name);
 }
+//#endif

@@ -22,21 +22,15 @@ import br.unicamp.ic.sed.mobilemedia.album.spec.excep.PersistenceMechanismExcept
 import br.unicamp.ic.sed.mobilemedia.album.spec.prov.IManager;
 import br.unicamp.ic.sed.mobilemedia.album.spec.req.IFilesystem;
 import br.unicamp.ic.sed.mobilemedia.album.spec.req.IMobileResources;
-
-
-
-
+import br.unicamp.ic.sed.mobilemedia.media.impl.NewLabelScreen;
 
 class AlbumController extends AbstractController {
 
 	private MIDlet midlet;
-	//private AlbumListScreen albumListScreen;
-
-
+	
 	public AlbumController(MIDlet midlet, AlbumListScreen albumListScreen) {
-		super(midlet, albumListScreen);
+		super(midlet , albumListScreen );
 		this.midlet = midlet;
-		//this.albumListScreen = albumListScreen;
 
 	}
 
@@ -50,6 +44,11 @@ class AlbumController extends AbstractController {
 		IManager manager = ComponentFactory.createInstance();
 		IFilesystem filesystem = (IFilesystem) manager.getRequiredInterface("IFilesystem");
 		System.out.println("[AlbumController] filesystem = "+filesystem);
+		
+		//#if Album && includeMusic
+		this.setTypeOfMedia( ScreenSingleton.getInstance().getCurrentMediaType() );
+		//#endif
+		
 		if (label.equals("Reset")) {
 			System.out.println("<* BaseController.handleCommand() *> Reset Photo Album");			
 			resetImageData();
@@ -61,6 +60,7 @@ class AlbumController extends AbstractController {
 			ScreenSingleton.getInstance().setCurrentScreenName(Constants.NEWALBUM_SCREEN);
 			NewLabelScreen newLabelScreen =  new NewLabelScreen("Add new Photo Album", NewLabelScreen.NEW_ALBUM);
 			newLabelScreen.setCommandListener(this);
+			ScreenSingleton.getInstance().setCurrentScreenName( Constants.NEWALBUM_SCREEN );
 			this.setCurrentScreen(newLabelScreen);
 			newLabelScreen = null;
 			return true;
@@ -78,7 +78,13 @@ class AlbumController extends AbstractController {
 			//begin - modified in MobileMedia-Cosmos-OO-v4
 
 			String albumName = ScreenSingleton.getInstance().getCurrentStoreName();
-			filesystem.deletePhotoAlbum(albumName);
+			
+			//#if Album && includeMusic
+			filesystem.deleteMediaAlbum(this.typeOfmedia , albumName);
+			//#else
+			filesystem.deleteMediaAlbum( null , albumName);
+			//#endif
+			
 			//end - modified in MobileMedia-Cosmos-OO-v4
 
 			goToPreviousScreen();
@@ -102,7 +108,7 @@ class AlbumController extends AbstractController {
 				if (currentScreen.getFormType() == NewLabelScreen.NEW_ALBUM){
 					String albumName = currentScreen.getLabelName();
 					System.out.println("[AlbumController] filesystem = "+filesystem);
-					filesystem.createNewPhotoAlbum(albumName);
+					filesystem.createNewMediaAlbum(this.typeOfmedia,albumName);
 				}
 				else{
 					if (currentScreen.getFormType() == NewLabelScreen.LABEL_PHOTO) {
@@ -131,8 +137,8 @@ class AlbumController extends AbstractController {
 		IManager manager = ComponentFactory.createInstance();
 		IFilesystem filesystem = (IFilesystem) manager.getRequiredInterface("IFilesystem");
 
-		filesystem.resetImageData();
-
+		filesystem.resetMediaData( this.typeOfmedia );
+		
 		//end - modified in MobileMedia-Cosmos-OO-v4
 
 		//Clear the names from the album list
@@ -142,7 +148,7 @@ class AlbumController extends AbstractController {
 
 		//Get the default ones from the album
 		//begin - modified in MobileMedia-Cosmos-OO-v4
-		String[] albumNames = filesystem.getAlbumNames();
+		String[] albumNames = filesystem.getAlbumNames( this.typeOfmedia );
 		//end - modified in MobileMedia-Cosmos-OO-v4
 
 		for (int i = 0; i < albumNames.length; i++) {
@@ -162,10 +168,10 @@ class AlbumController extends AbstractController {
 
 		IFilesystem filesystem = (IFilesystem) manager.getRequiredInterface("IFilesystem");
 
-		String[] albumNames = filesystem.getAlbumNames();
+		String[] albumNames = filesystem.getAlbumNames( this.typeOfmedia );
 
 		AlbumListScreen albumListScreen = this.getAlbumListScreen();
-
+		albumListScreen.deleteAll();
 		albumListScreen.repaintListAlbum( albumNames );
 		//end - modified in MobileMedia-Cosmos-OO-v4
 
@@ -233,5 +239,4 @@ class AlbumController extends AbstractController {
 		setAlbumListAsCurrentScreen(deleteConfAlert);
 		deleteConfAlert.setCommandListener(this);
 	}
-
 }

@@ -10,4 +10,9 @@ public interface IMobileResources {
 	 */
 	public MIDlet getMainMIDlet();
 		
+	/**
+	 * Destroy the Midlet
+	 * @param unconditional
+	 */
+	public void destroyApp(boolean unconditional);
 }

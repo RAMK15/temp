@@ -18,13 +18,9 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.midlet.MIDlet;
 
+import br.unicamp.ic.sed.mobilemedia.main.ControllerInterface;
 
-import br.unicamp.ic.sed.mobilemedia.filesystemmgr.spec.excep.ImageNotFoundException;
-import br.unicamp.ic.sed.mobilemedia.filesystemmgr.spec.excep.NullAlbumDataReference;
-import br.unicamp.ic.sed.mobilemedia.filesystemmgr.spec.excep.PersistenceMechanismException;
-import br.unicamp.ic.sed.mobilemedia.main.spec.prov.ControllerInterface;
-import br.unicamp.ic.sed.mobilemedia.sms.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IExceptionHandler;
+
 
 //import br.unicamp.ic.sed.mobilemedia.album.impl.AlbumListScreen;
 
@@ -39,8 +35,7 @@ public abstract class AbstractController implements CommandListener, ControllerI
 
 	//Define the basic screens
 
-	private IManager manager = ComponentFactory.createInstance();
-	
+
 	/**
 	 * @param midlet
 	 * @param nextController
@@ -64,37 +59,25 @@ public abstract class AbstractController implements CommandListener, ControllerI
 		//If the current controller cannot handle the command, pass it to the next
 		//controller in the chain.
 
-		try {
-			if (handleCommand(command) == false) {
-				ControllerInterface next = this.getNextController();
-				if (next != null) {
-					System.out.println("Passing to next controller in chain: " + next.getClass().getName());
-					return next.postCommand(command);
-				} else {
-					System.out.println("AbstractController::postCommand - Reached top of chain. No more handlers for command: " + command.getLabel());
-					IManager manager = ComponentFactory.createInstance();
-					
-					//TODO call the next component to handle the command
-					return false;
+		if (handleCommand(command) == false) {
+			ControllerInterface next = this.getNextController();
+			if (next != null) {
+				System.out.println("Passing to next controller in chain: " + next.getClass().getName());
+				return next.postCommand(command);
+			} else {
+				System.out.println("AbstractController::postCommand - Reached top of chain. No more handlers for command: " + command.getLabel());				
+				//TODO call the next component to handle the command
+				return false;
 
-				}
 			}
-		} catch (ImageNotFoundException e) {
-			IExceptionHandler handler = (IExceptionHandler)manager.getRequiredInterface("IExceptionHandler");
-			handler.handle( e );
-		} catch (NullAlbumDataReference e) {
-			IExceptionHandler handler = (IExceptionHandler)manager.getRequiredInterface("IExceptionHandler");
-			handler.handle( e );
-		} catch (PersistenceMechanismException e) {
-			IExceptionHandler handler = (IExceptionHandler)manager.getRequiredInterface("IExceptionHandler");
-			handler.handle( e );
 		}
+
 
 		return false;
 
 	}
 
-	public abstract boolean handleCommand(Command c) throws ImageNotFoundException, NullAlbumDataReference, PersistenceMechanismException;
+	public abstract boolean handleCommand(Command c);
 
 	/* 
 	 * Handle events. For now, this just passes control off to a 'wrapper'

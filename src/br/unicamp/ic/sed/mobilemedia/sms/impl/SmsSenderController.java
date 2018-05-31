@@ -9,12 +9,12 @@ package br.unicamp.ic.sed.mobilemedia.sms.impl;
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 
-import br.unicamp.ic.sed.mobilemedia.main.spec.prov.IImageData;
-import br.unicamp.ic.sed.mobilemedia.sms.spec.excep.ImageNotFoundException;
+import br.unicamp.ic.sed.mobilemedia.main.IMediaData;
+import br.unicamp.ic.sed.mobilemedia.sms.spec.excep.MediaNotFoundException;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.excep.NullAlbumDataReference;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.excep.PersistenceMechanismException;
+import br.unicamp.ic.sed.mobilemedia.sms.spec.dt.Constants;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.prov.IManager;
-import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IAlbum;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IExceptionHandler;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IFilesystem;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IPhoto;
@@ -31,11 +31,7 @@ import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IPhoto;
  */
 class SmsSenderController extends AbstractController {
 
-	private String imageName = "";
-
 	NetworkScreen networkScreen;
-
-	private String selectedImageName = "null";
 
 	/**
 	 * @param midlet
@@ -48,17 +44,10 @@ class SmsSenderController extends AbstractController {
 		super( midlet );
 	}
 
-	private String getImageName() {
-		return imageName;
-	}
-
 	private NetworkScreen getNetworkScreen() {
 		return new NetworkScreen("Receiver Details");
 	}
 
-//	private String getSelectedImageName() {
-//		return selectedImageName;
-//	}
 	/**
 	 * Handle SMS specific events.
 	 * If we are given a standard cSystem.out.println("Entrou!!!");ommand that is handled by the BaseController, pass 
@@ -76,7 +65,7 @@ class SmsSenderController extends AbstractController {
 		IManager manager = ComponentFactory.createInstance();
 		IFilesystem filesystem = (IFilesystem) manager.getRequiredInterface("IFilesystem");
 		IPhoto photo = (IPhoto) manager.getRequiredInterface("IPhoto");
-		
+//		IMedia media = (IMedia) manager.getRequiredInterface("IMedia");
 		
 		IExceptionHandler handler = (IExceptionHandler) manager.getRequiredInterface("IExceptionHandler"); 
 		/** Case: ... **/
@@ -85,7 +74,6 @@ class SmsSenderController extends AbstractController {
 			
 			System.out.println("Entrou!!!");
 			this.networkScreen = this.getNetworkScreen();
-			this.selectedImageName = this.getImageName();
 			networkScreen.setCommandListener(this);
 			this.setCurrentScreen(networkScreen);
 			
@@ -93,24 +81,22 @@ class SmsSenderController extends AbstractController {
 
 		} else if (label.equals("Send Now")) {
 			try{
-				int cont = 0;
-				
 				//Get the data from the currently selected image
-				IImageData ii = null;
-				//ImageAccessor imageAccessor = null;
+				IMediaData ii = null;
+				//MediaAccessor imageAccessor = null;
 				byte[] imageBytes = null;
-				String imageName = photo.getSelectedImageName();
+				String imageName = photo.getImageName();
 				System.out.println("ImageName: " + imageName );
-				ii = filesystem.getImageInfo( imageName );
+				ii = filesystem.getImageInfo( imageName , Constants.IMAGE_MEDIA );
 				
 				//ii = getAlbumData().getImageInfo(selectedImageName);
 				String parentAlbum = ii.getParentAlbumName();
-				String imageLabel = ii.getImageLabel();
+				String imageLabel = ii.getMediaLabel();
 				int recordID = ii.getForeignRecordId();
 				imageBytes = filesystem.loadImageBytesFromRMS( parentAlbum , imageLabel, recordID);
 				//imageBytes = imageAccessor.loadImageBytesFromRMS(ii.getParentAlbumName(), ii.getImageLabel(), ii.getForeignRecordId());
 		
-				System.out.println("SmsController::handleCommand - Sending bytes for image " + ii.getImageLabel() + " with length: " + imageBytes.length);
+				System.out.println("SmsController::handleCommand - Sending bytes for image " + ii.getMediaLabel() + " with length: " + imageBytes.length);
 	
 				//Get the destination info - set some defaults just in case
 				String smsPort = "1000";
@@ -126,10 +112,9 @@ class SmsSenderController extends AbstractController {
 				new Thread(smsS).start();
 				return true;
 
-			} catch (ImageNotFoundException e) {
+			} catch (MediaNotFoundException e) {
 				handler.handle( e );
 			} catch (NullAlbumDataReference e) {
-				//this.setAlbumData( new AlbumData() );
 				handler.handle( e );
 			} catch (PersistenceMechanismException e) {
 				handler.handle( e );
@@ -137,9 +122,7 @@ class SmsSenderController extends AbstractController {
 			
 		} else if (label.equals("Cancel")) {
 
-			//TODO: If they want to cancel sending the SMS message, send them back to main screen
-			IAlbum album = (IAlbum) manager.getRequiredInterface("IAlbum");
-			album.initAlbumListScreen(  );
+			photo.showLastImage();
 			return true;
 
 		} 

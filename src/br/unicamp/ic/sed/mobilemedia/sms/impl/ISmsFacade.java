@@ -5,7 +5,7 @@ package br.unicamp.ic.sed.mobilemedia.sms.impl;
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 
-import br.unicamp.ic.sed.mobilemedia.main.spec.prov.ControllerInterface;
+import br.unicamp.ic.sed.mobilemedia.main.ControllerInterface;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.prov.IManager;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.prov.ISms;
 import br.unicamp.ic.sed.mobilemedia.sms.spec.req.IMobileResources;
@@ -25,7 +25,6 @@ public class ISmsFacade implements ISms{
 		senderController.setNextController(nextController);
 		
 		SmsReceiverController controller = new SmsReceiverController( midlet );
-		//controller.setNextController(albumController);
 		SmsReceiverThread smsR = new SmsReceiverThread(midlet , controller);
 		System.out.println("SmsController::Starting SMSReceiver Thread");
 		new Thread(smsR).start();

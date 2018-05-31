@@ -20,7 +20,12 @@ import javax.microedition.lcdui.List;
  */
 class AlbumListScreen extends List {
 
-	private static final Command exitCommand = new Command("Exit", Command.STOP, 2);
+	//#if includeMusic && Album
+	//[NC] Added in the scenario 07
+	public static final Command exitCommand = new Command("Back", Command.STOP, 2);
+	//#elif Album || includeMusic
+	//public static final Command exitCommand = new Command("Exit", Command.STOP, 2);
+	//#endif
 	private static final Command selectCommand = new Command("Select", Command.ITEM, 1);
 	private static final Command createAlbumCommand = new Command("New Photo Album", Command.ITEM, 1);
 	private static final Command deleteAlbumCommand = new Command("Delete Album", Command.ITEM, 1);
@@ -60,7 +65,9 @@ class AlbumListScreen extends List {
 	 * 
 	 */
 	public void initMenu() {
+		//#if includeMusic || Album
 		this.addCommand(exitCommand);
+		//#endif
 		this.addCommand(selectCommand);
 		this.addCommand(createAlbumCommand);
 		this.addCommand(deleteAlbumCommand);

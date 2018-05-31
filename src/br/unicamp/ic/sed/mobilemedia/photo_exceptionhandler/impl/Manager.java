@@ -1,3 +1,4 @@
+//#ifdef Album
 package br.unicamp.ic.sed.mobilemedia.photo_exceptionhandler.impl;
 
 import java.util.Enumeration;
@@ -16,7 +17,9 @@ class Manager implements IManager{
 	
 	public String[] getProvidedInterfaces(){
 	   Vector provInterfaceList = new Vector();
-	  provInterfaceList.addElement("IAdapterPhotoEH");
+	  provInterfaceList.addElement("IAdapterMediaEH");
+	     
+	   
 	   return convertListToArray(provInterfaceList.elements());
 	}
 	
@@ -52,6 +55,4 @@ class Manager implements IManager{
 		return stringArray;
 	}
 }
-
-
-
+//#endif
